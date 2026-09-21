@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import StudyBlock, { confidenceColors } from './StudyBlock.jsx';
 import QuestionItem from './QuestionItem.jsx';
 import KeyReview from './KeyReview.jsx';
+import { AddedTag } from './Visual.jsx';
 import { storage } from '../storage';
 
 const SUBTABS = [
@@ -48,6 +49,18 @@ export default function ChapterView({ chapter }) {
           <div className="text-sm text-slate-500">Lecture {chapter.lectureNo ?? chapter.id}{chapter.date ? ` · ${chapter.date}` : ''}</div>
         </div>
         {chapter.subtitle && <p className="text-slate-600 mt-1">{chapter.subtitle}</p>}
+        {chapter.sourceNote && (
+          <p className="text-xs text-slate-500 mt-2">📎 <strong>Source:</strong> {chapter.sourceNote}</p>
+        )}
+        {chapter.addedLegend && (
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-600 bg-violet-50 border border-violet-200 rounded-lg px-3 py-2">
+            <AddedTag />
+            <span>
+              Boxes with this tag are background I added to fill gaps in the slides — they were <strong>not</strong> presented
+              in lecture. Everything else comes from Dr. Held’s slides and in-class notes.
+            </span>
+          </div>
+        )}
       </header>
 
       <div className="flex gap-1 border-b border-slate-200 mb-6">

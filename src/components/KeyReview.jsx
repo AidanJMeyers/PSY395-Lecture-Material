@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Pill } from './Visual.jsx';
+import { Card, Pill, AddedTag } from './Visual.jsx';
 
 export default function KeyReview({ keyReview }) {
   if (!keyReview) return null;
@@ -19,6 +19,7 @@ export default function KeyReview({ keyReview }) {
                 <div className="flex items-center gap-2 mb-1">
                   <span className="font-bold text-slate-900">{v.term}</span>
                   {v.tag && <Pill color={v.tagColor || 'blue'}>{v.tag}</Pill>}
+                  {v.added && <AddedTag label="added" />}
                 </div>
                 <div className="text-sm text-slate-700">{v.def}</div>
               </div>
@@ -32,7 +33,7 @@ export default function KeyReview({ keyReview }) {
           <ul className="space-y-3">
             {laws.map((l, i) => (
               <li key={i} className="border-l-4 border-violet-400 pl-3 py-1">
-                <div className="font-semibold text-slate-900">{l.name}</div>
+                <div className="font-semibold text-slate-900">{l.name} {l.added && <AddedTag label="added" />}</div>
                 <div className="text-sm text-slate-700">{l.desc}</div>
               </li>
             ))}
@@ -45,7 +46,7 @@ export default function KeyReview({ keyReview }) {
           <div className="grid gap-3 md:grid-cols-2">
             {methods.map((m, i) => (
               <div key={i} className="border border-slate-200 rounded p-3">
-                <div className="font-bold text-slate-900 mb-1">{m.name}</div>
+                <div className="font-bold text-slate-900 mb-1">{m.name} {m.added && <AddedTag label="added" />}</div>
                 {m.expand && <div className="text-xs text-slate-500 mb-2">{m.expand}</div>}
                 <div className="text-sm text-slate-700">{m.desc}</div>
               </div>

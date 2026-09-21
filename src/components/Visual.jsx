@@ -67,6 +67,30 @@ export function DifficultyChip({ level }) {
   return <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-[10px] font-bold ${map[level]}`} title={label}>{level}</span>;
 }
 
+// Marks content that did NOT come from the professor's slides or in-class annotations —
+// background added to bridge gaps. Rendered as a dashed violet box so it is never mistaken
+// for lecture material.
+export function Added({ title, children, source }) {
+  return (
+    <div className="border-2 border-dashed border-violet-300 bg-violet-50/70 rounded-lg p-3 my-3">
+      <div className="flex flex-wrap items-center gap-2 mb-1.5">
+        <AddedTag />
+        {title && <span className="font-semibold text-violet-950 text-sm">{title}</span>}
+      </div>
+      <div className="text-sm text-slate-800 space-y-2">{children}</div>
+      {source && <div className="text-[11px] text-violet-700 mt-2 italic">Source: {source}</div>}
+    </div>
+  );
+}
+
+export function AddedTag({ label = 'Added — not in slides' }) {
+  return (
+    <span className="inline-block text-[10px] font-bold uppercase tracking-wider bg-violet-600 text-white px-1.5 py-0.5 rounded whitespace-nowrap">
+      ➕ {label}
+    </span>
+  );
+}
+
 export function AnchorImage({ src, alt, caption }) {
   const url = `${import.meta.env.BASE_URL}images/${src}`;
   return (

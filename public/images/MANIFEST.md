@@ -97,3 +97,61 @@ No images were extracted from the three clean student decks
 the same 45 slides already captured above, so extracting them would have duplicated every image while
 losing the handwritten notes. The ASA guide is a text document — its content is reproduced as tables in
 block 3g rather than as page images.
+
+---
+
+# Image Manifest — Quiz 2
+
+## Sources and method
+
+| Folder | Source | Method |
+|---|---|---|
+| `L4/` | `Annotated Law Policies Slides 1.pdf` (Mon Sep 14, OneNote printout, 12 pages) | Each page rendered at 170 DPI, then cropped to the slide content. The OneNote frame border is detected and excluded so the crop hugs the actual text and handwriting. Handwritten notes appear only on pages 9 and 11 (Medicare). |
+| `L5/` | `Second Day of Laws & Policies.pdf` (Wed Sep 16, clean student deck, 17 slides) | Each slide rendered whole at 110 DPI (~1400 px wide). No annotated version was provided for this day. |
+
+## Placement
+
+**28 slides rendered · 26 placed · 2 logged below · 0 discarded**
+
+### Lecture 4 — `images/L4/`
+| File | Block | Content |
+|---|---|---|
+| L4_s01_p02 | 4a | Accessible seating specifications |
+| L4_s02_p03 | 4b | Social Security definition + payroll tax table |
+| L4_s03_p04 | 4c | Full retirement age by birth year |
+| L4_s04_p05 | 4b | Videos: SSA "History Summary" + unlabeled news clip |
+| L4_s05_p06 | 4e | Four Social Security reform options (grading activity) |
+| L4_s06_p07 | 4d | Earnings test + average monthly payment ($2,071) |
+| L4_s07_p08 | 4c | Claiming age 62 / 67 / 70 comparison table |
+| L4_s08_p09 | 4f | Medicare parts — **annotated** (labels, "subsidized", "pay a little more") |
+| L4_s09_p10 | — | *Not placed — see below* |
+| L4_s10_p11 | 4f | Medicare parts — full text + **annotated** "$202 automatically deducted every month" |
+| L4_s11_p12 | 4g | Medicare — final clean version ("NOT to be confused with Medicaid") |
+
+### Lecture 5 — `images/L5/`
+| File | Block | Content |
+|---|---|---|
+| L5_s01 | 5a | Florida's aging population + county map |
+| L5_s02 | 5a | Florida 60+ characteristics table (~5,967,000) |
+| L5_s03 | 5b | Discussion: why are older adults moving to Florida? |
+| L5_s04 | 5b | Discussion: why is Florida uniquely affected? |
+| L5_s05 | 5c | Guess! That! Number! (blanks filled in class) |
+| L5_s06 | 5d | CS/HB 1121 — long-term care access |
+| L5_s07 | 5e | Discussion: most vulnerable first vs. first-come, first-served |
+| L5_s08 | 5d | CS/HB 1121 — HCE food and nutritional supplements |
+| L5_s09 | 5d, 5f | CS/HB 1121 — guardian dementia training + guardian definitions *(used twice)* |
+| L5_s10 | 5f | Discussion: should family guardians need dementia training? |
+| L5_s11 | 5g | Wendy Williams conservatorship |
+| L5_s12 | 5h | Orange County unhoused seniors (2025) |
+| L5_s13 | 5h | Why are older adults becoming unhoused? (3 categories) |
+| L5_s14 | 5i | MIPAA (2002) + UN Decade of Healthy Ageing |
+| L5_s15 | 5j | Median age by world region (repeat of L1) |
+| L5_s16 | 5j | Rapp, Ronchetti & Sicsic (2022) article title page |
+| L5_s17 | 5i | Video still — unlabeled |
+
+## Not placed
+
+| File | Reason |
+|---|---|
+| `L4/L4_s09_p10.jpg` | An intermediate "build" of the Medicare slide (Part B text revealed, Advantage column still empty). Everything on it also appears on L4_s10_p11, which adds her $202 note. |
+| *(page 1 of the annotated PDF)* | OneNote page title only ("Laws, Policies, and Efforts — Monday, September 14, 2026"); no slide, so nothing was rendered. |

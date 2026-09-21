@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { storage } from '../storage';
 import CommentBox from './CommentBox.jsx';
-import { DifficultyChip } from './Visual.jsx';
+import { DifficultyChip, AddedTag } from './Visual.jsx';
 
 /**
  * QuestionItem supports multiple question types:
- * - mcq: standard 4-option multiple choice
- * - short: free-text short answer with reveal-key
- * - math: numeric/formula input with tolerance (if q.tolerance given)
- * - diagram: image-based MCQ (question body can include <img>)
- * - fillblank: single-blank free text
- * - tf: true/false with justification textarea
+ * - mcq: standard multiple choice
+ * - tf: true/false (correct: 0 = True, 1 = False)
+ * - short: free-text short answer, auto-graded by keyword match against q.correct
+ * - saq: short-answer / essay practice. Write an answer, reveal the model sample answer
+ *        (q.sampleAnswer) and rubric key points (q.keyPoints), then self-grade.
+ * - math, diagram, fillblank: kept from the template
  *
+ * Optional fields: q.topic (chip), q.added (chip — question draws on content not in the slides).
  * Every question gets a comment box for "review later" notes.
  */
 export default function QuestionItem({ storageKey, q, index, onAnswered }) {
   const type = q.type || 'mcq';
-  const [selected, setSelected] = useState(null);      // MCQ-style
-  const [freeText, setFreeText] = useState('');        // short / math / fillblank / tf justification
+  const [selected, setSelected] = useState(null);
+  const [freeText, setFreeText] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [correct, setCorrect] = useState(null);
+  const [revealed, setRevealed] = useState(false);      // saq only
+  const [selfGrade, setSelfGrade] = useState(null);     // saq only: 'full' | 'partial' | 'missed'
+  const [checked, setChecked] = useState({});           // saq key-point checklist
 
   useEffect(() => {
     (async () => {
@@ -29,6 +33,9 @@ export default function QuestionItem({ storageKey, q, index, onAnswered }) {
         setFreeText(saved.freeText ?? '');
         setSubmitted(!!saved.submitted);
         setCorrect(saved.correct ?? null);
+        setRevealed(!!saved.revealed);
+        setSelfGrade(saved.selfGrade ?? null);
+        setChecked(saved.checked ?? {});
       }
     })();
   }, [storageKey]);
@@ -49,12 +56,9 @@ export default function QuestionItem({ storageKey, q, index, onAnswered }) {
 
   const submit = async () => {
     let isCorrect = false;
-    if (type === 'mcq' || type === 'diagram') {
+    if (type === 'mcq' || type === 'diagram' || type === 'tf') {
       if (selected == null) return;
       isCorrect = selected === q.correct;
-    } else if (type === 'tf') {
-      if (selected == null) return;
-      isCorrect = selected === q.correct;  // expected to be 0 (true) or 1 (false)
     } else if (type === 'short' || type === 'fillblank') {
       if (!freeText.trim()) return;
       isCorrect = gradeShort(freeText, q.correct);
@@ -68,31 +72,67 @@ export default function QuestionItem({ storageKey, q, index, onAnswered }) {
     onAnswered?.(isCorrect);
   };
 
+  // ---- SAQ flow ----
+  const reveal = async () => {
+    setRevealed(true);
+    await storage.set(storageKey, { freeText, revealed: true, submitted: false, correct: null, checked });
+  };
+
+  const toggleCheck = async (i) => {
+    const next = { ...checked, [i]: !checked[i] };
+    setChecked(next);
+    await storage.set(storageKey, { freeText, revealed: true, submitted, correct, selfGrade, checked: next });
+  };
+
+  const grade = async (g) => {
+    const isCorrect = g === 'full';
+    setSelfGrade(g);
+    setSubmitted(true);
+    setCorrect(isCorrect);
+    await storage.set(storageKey, { freeText, revealed: true, submitted: true, correct: isCorrect, selfGrade: g, checked });
+    onAnswered?.(isCorrect);
+  };
+
   const reset = async () => {
     setSelected(null);
     setFreeText('');
     setSubmitted(false);
     setCorrect(null);
+    setRevealed(false);
+    setSelfGrade(null);
+    setChecked({});
     await storage.remove(storageKey);
     onAnswered?.(null, true);
   };
 
   const showMCQ = type === 'mcq' || type === 'diagram' || type === 'tf';
   const showText = type === 'short' || type === 'math' || type === 'fillblank';
+  const isSAQ = type === 'saq';
   const choices = type === 'tf' ? ['True', 'False'] : q.choices;
 
+  const verdict = isSAQ
+    ? submitted && ({ full: ['Got it ✓', 'bg-emerald-100 text-emerald-700'], partial: ['Partial ~', 'bg-amber-100 text-amber-800'], missed: ['Missed ✗', 'bg-red-100 text-red-700'] }[selfGrade])
+    : submitted && (correct ? ['Correct ✓', 'bg-emerald-100 text-emerald-700'] : ['Incorrect ✗', 'bg-red-100 text-red-700']);
+
   return (
-    <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm mb-4">
+    <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm mb-4 break-inside-avoid">
       <div className="flex items-start justify-between gap-4 mb-3">
-        <div className="font-semibold text-slate-800 flex-1">
-          <span className="text-slate-500 mr-2">Q{index + 1}.</span>{q.q}
+        <div className="flex-1">
+          {(q.topic || isSAQ || q.added) && (
+            <div className="flex flex-wrap gap-1.5 mb-1.5">
+              {isSAQ && <span className="text-[10px] font-bold uppercase tracking-wider bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded">Short answer</span>}
+              {q.topic && <span className="text-[10px] font-semibold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">{q.topic}</span>}
+              {q.added && <AddedTag label="Uses added content" />}
+            </div>
+          )}
+          <div className="font-semibold text-slate-800">
+            <span className="text-slate-500 mr-2">Q{index + 1}.</span>{q.q}
+          </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {q.difficulty && <DifficultyChip level={q.difficulty} />}
-          {submitted && (
-            <span className={`text-xs px-2 py-1 rounded font-semibold whitespace-nowrap ${correct ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
-              {correct ? 'Correct ✓' : 'Incorrect ✗'}
-            </span>
+          {verdict && (
+            <span className={`text-xs px-2 py-1 rounded font-semibold whitespace-nowrap ${verdict[1]}`}>{verdict[0]}</span>
           )}
         </div>
       </div>
@@ -129,18 +169,6 @@ export default function QuestionItem({ storageKey, q, index, onAnswered }) {
               </label>
             );
           })}
-          {type === 'tf' && q.justificationRequired && (
-            <div className="mt-2">
-              <label className="text-xs text-slate-500 mb-1 block">Justify your answer:</label>
-              <textarea
-                value={freeText}
-                onChange={(e) => setFreeText(e.target.value)}
-                disabled={submitted}
-                rows={2}
-                className="w-full px-3 py-2 text-sm border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
-              />
-            </div>
-          )}
         </div>
       )}
 
@@ -162,8 +190,77 @@ export default function QuestionItem({ storageKey, q, index, onAnswered }) {
         </div>
       )}
 
-      <div className="mt-3 flex items-center gap-3">
-        {!submitted ? (
+      {isSAQ && (
+        <div>
+          <textarea
+            value={freeText}
+            onChange={(e) => setFreeText(e.target.value)}
+            disabled={revealed}
+            placeholder="Write your answer as you would on the quiz — then reveal the key and grade yourself."
+            rows={5}
+            className="w-full px-3 py-2 text-sm border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500 disabled:bg-slate-50"
+          />
+          {revealed && (
+            <div className="mt-3 space-y-3">
+              <div className="p-3 rounded-md bg-emerald-50 border border-emerald-200">
+                <div className="text-xs font-bold uppercase tracking-wider text-emerald-800 mb-1">Sample answer</div>
+                <div className="text-sm text-emerald-950 leading-relaxed whitespace-pre-line">{q.sampleAnswer}</div>
+              </div>
+              {q.keyPoints?.length > 0 && (
+                <div className="p-3 rounded-md bg-slate-50 border border-slate-200">
+                  <div className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
+                    Key points — tick the ones your answer hit
+                  </div>
+                  <ul className="space-y-1.5">
+                    {q.keyPoints.map((kp, i) => (
+                      <li key={i}>
+                        <label className="flex items-start gap-2 text-sm text-slate-800 cursor-pointer">
+                          <input type="checkbox" checked={!!checked[i]} onChange={() => toggleCheck(i)} className="mt-0.5 w-4 h-4 accent-emerald-600" />
+                          <span>{kp}</span>
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="text-xs text-slate-500 mt-2">
+                    {Object.values(checked).filter(Boolean).length}/{q.keyPoints.length} key points covered
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        {isSAQ ? (
+          !revealed ? (
+            <button
+              onClick={reveal}
+              className="px-4 py-2 text-sm font-semibold bg-sky-600 text-white rounded hover:bg-sky-700"
+            >
+              {freeText.trim() ? 'Check my answer' : 'Show answer key'}
+            </button>
+          ) : (
+            <>
+              <span className="text-xs text-slate-500 mr-1">Grade yourself:</span>
+              {[['full', 'Got it', 'bg-emerald-600 hover:bg-emerald-700'], ['partial', 'Partial', 'bg-amber-500 hover:bg-amber-600'], ['missed', 'Missed it', 'bg-red-600 hover:bg-red-700']].map(([g, label, cls]) => (
+                <button
+                  key={g}
+                  onClick={() => grade(g)}
+                  className={`px-3 py-1.5 text-sm font-semibold text-white rounded ${cls} ${selfGrade === g ? 'ring-2 ring-offset-1 ring-slate-400' : ''}`}
+                >
+                  {label}
+                </button>
+              ))}
+              <button
+                onClick={reset}
+                className="ml-auto px-3 py-1.5 text-sm font-semibold bg-slate-200 text-slate-700 rounded hover:bg-slate-300"
+              >
+                Try Again
+              </button>
+            </>
+          )
+        ) : !submitted ? (
           <button
             onClick={submit}
             disabled={showMCQ ? selected == null : !freeText.trim()}
@@ -181,9 +278,9 @@ export default function QuestionItem({ storageKey, q, index, onAnswered }) {
         )}
       </div>
 
-      {submitted && (
-        <div className={`mt-3 p-3 rounded-md text-sm leading-relaxed ${correct ? 'bg-emerald-50 text-emerald-900' : 'bg-amber-50 text-amber-900'}`}>
-          <div className="font-semibold mb-1">Explanation</div>
+      {((!isSAQ && submitted) || (isSAQ && revealed && q.explanation)) && (
+        <div className={`mt-3 p-3 rounded-md text-sm leading-relaxed ${!isSAQ && !correct ? 'bg-amber-50 text-amber-900' : 'bg-sky-50 text-sky-950'}`}>
+          <div className="font-semibold mb-1">{isSAQ ? 'Why this matters' : 'Explanation'}</div>
           <div>{q.explanation}</div>
         </div>
       )}

@@ -21,7 +21,21 @@ export const quizzes = [
       'Ageism and its different forms'
     ]
   },
-  { id: 2, label: 'Quiz 2', date: 'Mon, Sep 21', ready: false, topics: 'Laws, Policies & Efforts · Cognition Changes' },
+  {
+    id: 2,
+    label: 'Quiz 2',
+    date: 'Mon, Sep 21',
+    ready: true,
+    topics: 'Laws, Policies & Efforts — Nation · State · Global',
+    focus: [
+      'Why older adults are becoming unhoused',
+      'Difference between public and professional guardians',
+      'CS/HB 1121 — what it did and why it is significant',
+      'Social Security & the impending problem',
+      'Medicare'
+    ],
+    note: 'The syllabus also lists Cognition Changes for this date, but that lecture is taught on quiz day and was not in the outline or materials, so it is not included here.'
+  },
   { id: 3, label: 'Quiz 3', date: 'Wed, Sep 30', ready: false, topics: 'Creativity, Wisdom & Self-Expression' },
   { id: 4, label: 'Quiz 4', date: 'Mon, Oct 19', ready: false, topics: 'Friendships & Relationships · Mental Health in Older Adulthood' },
   { id: 5, label: 'Quiz 5', date: 'Mon, Oct 26', ready: false, topics: 'Longevity, Health & Functioning' },

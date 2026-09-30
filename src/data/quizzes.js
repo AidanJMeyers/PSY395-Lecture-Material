@@ -36,7 +36,22 @@ export const quizzes = [
     ],
     note: 'The syllabus also lists Cognition Changes for this date, but that lecture is taught on quiz day and was not in the outline or materials, so it is not included here.'
   },
-  { id: 3, label: 'Quiz 3', date: 'Wed, Sep 30', ready: false, topics: 'Creativity, Wisdom & Self-Expression' },
+  {
+    id: 3,
+    label: 'Quiz 3',
+    date: 'Wed, Sep 30',
+    ready: true,
+    topics: 'Cognitive Changes · Dementia · Creativity & Imagination',
+    focus: [
+      'Normal cognitive aging: what declines vs. what holds',
+      'Processing speed and the two hypotheses',
+      'Dementia vs. Alzheimer’s: proteins, symptoms, tests, medications',
+      'Parkinson’s disease and frontotemporal dementia',
+      'Dementia risk and protective factors',
+      'Creativity in later life and how it is measured'
+    ],
+    note: 'No outline was given for this quiz, so these focus areas are inferred from the three lectures. Her note on the Creative Proactivity slide reads “Stopped here 9/28/26” — the last creativity slides may have been covered on quiz day.'
+  },
   { id: 4, label: 'Quiz 4', date: 'Mon, Oct 19', ready: false, topics: 'Friendships & Relationships · Mental Health in Older Adulthood' },
   { id: 5, label: 'Quiz 5', date: 'Mon, Oct 26', ready: false, topics: 'Longevity, Health & Functioning' },
   { id: 6, label: 'Quiz 6', date: 'Fri, Oct 30', ready: false, topics: 'Leisure & Retirement · Death & Dying' },

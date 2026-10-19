@@ -7,11 +7,13 @@
 import { exam, examConfig } from './exam.js';
 import { exam2, exam2Config } from './exam_quiz2.js';
 import { exam3, exam3Config } from './exam_quiz3.js';
+import { exam4, exam4Config } from './exam_quiz4.js';
 
 export const examSets = [
   { quizId: 1, label: 'Quiz 1', title: 'Quiz 1 Practice Exam', prefix: 'studyguide:exam', questions: exam, config: examConfig },
   { quizId: 2, label: 'Quiz 2', title: 'Quiz 2 Practice Quiz', prefix: 'studyguide:exam2', questions: exam2, config: exam2Config },
-  { quizId: 3, label: 'Quiz 3', title: 'Quiz 3 Practice Quiz', prefix: 'studyguide:exam3', questions: exam3, config: exam3Config }
+  { quizId: 3, label: 'Quiz 3', title: 'Quiz 3 Practice Quiz', prefix: 'studyguide:exam3', questions: exam3, config: exam3Config },
+  { quizId: 4, label: 'Quiz 4', title: 'Quiz 4 Practice Quiz', prefix: 'studyguide:exam4', questions: exam4, config: exam4Config }
 ];
 
 export const examFor = (quizId) => examSets.find((e) => e.quizId === quizId);

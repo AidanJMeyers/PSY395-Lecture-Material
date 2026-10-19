@@ -17,5 +17,7 @@ import L5 from '../chapters/L5_state_global_policy.jsx';
 import L6 from '../chapters/L6_cognitive_changes.jsx';
 import L7 from '../chapters/L7_dementia.jsx';
 import L8 from '../chapters/L8_creativity.jsx';
+import L9 from '../chapters/L9_selfexpression_wisdom.jsx';
+import L10 from '../chapters/L10_friendships_relationships.jsx';
 
-export const chapters = [L1, L2, L3, L4, L5, L6, L7, L8];
+export const chapters = [L1, L2, L3, L4, L5, L6, L7, L8, L9, L10];

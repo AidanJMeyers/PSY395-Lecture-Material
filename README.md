@@ -12,8 +12,8 @@ Built from the annotated lecture slides — every block leads with the actual an
 |---|---|---|
 | **Quiz 1** — Fri, Sep 4 | ✅ Built | L1 Adult Development · L2 Personality · L3 Ageism & Media |
 | **Quiz 2** — Mon, Sep 21 | ✅ Built | L4 National Programs (Social Security, Medicare) · L5 Florida & Global (CS/HB 1121, guardians, unhoused older adults, MIPAA/UN Decade) |
-| Quiz 3 — Wed, Sep 30 | Placeholder | Creativity, Wisdom & Self-Expression |
-| Quiz 4 — Mon, Oct 19 | Placeholder | Friendships & Relationships · Mental Health |
+| **Quiz 3** — Wed, Sep 30 | ✅ Built | L6 Cognitive Changes · L7 Dementia · L8 Creativity & Imagination |
+| **Quiz 4** — Mon, Oct 19 | ✅ Built | L9 Self-Expression & Wisdom · L10 Friendships & Relationships |
 | Quiz 5 — Mon, Oct 26 | Placeholder | Longevity, Health & Functioning |
 | Quiz 6 — Fri, Oct 30 | Placeholder | Leisure & Retirement · Death & Dying |
 | Final Exam — Thu, Dec 10 | Placeholder | Cumulative |
@@ -67,6 +67,8 @@ One-time setup: **Settings → Pages → Source: GitHub Actions**.
 
 Quiz 1: the annotated lecture slides (Lectures 1–3), the three student slide decks, and the assigned ASA Age-Friendly Communication Guide (2025).
 Quiz 2: the annotated Laws & Policies slides (Sep 14) and the Day 2 student deck (Sep 16), plus the professor's quiz outline.
+Quiz 3: the annotated Quiz 3 lecture slides (Cognitive Changes Sep 21, Dementia Sep 23, Creativity Sep 28).
+Quiz 4: the Creativity Day 2 and Friendships & Relationships student decks, plus the sources she cited on them — Felmlee & Muraco (2009), Shen et al. (2025, *Nature Human Behaviour*), the U. Michigan National Poll on Healthy Aging (2024), and Smith et al. (2020).
 
 ---
 

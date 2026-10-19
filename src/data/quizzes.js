@@ -52,7 +52,22 @@ export const quizzes = [
     ],
     note: 'No outline was given for this quiz, so these focus areas are inferred from the three lectures. Her note on the Creative Proactivity slide reads “Stopped here 9/28/26” — the last creativity slides may have been covered on quiz day.'
   },
-  { id: 4, label: 'Quiz 4', date: 'Mon, Oct 19', ready: false, topics: 'Friendships & Relationships · Mental Health in Older Adulthood' },
+  {
+    id: 4,
+    label: 'Quiz 4',
+    date: 'Mon, Oct 19',
+    ready: true,
+    topics: 'Self-Expression & Wisdom · Friendships & Relationships',
+    focus: [
+      'Self-expression and identity through change',
+      'Wisdom: definitions, theorists, and why age ≠ wisdom',
+      'Friendship, the confidant effect, and health outcomes',
+      'Friendship norms, weak ties, and grandparenting',
+      'Marriage, LAT, gray divorce, and legal protections',
+      'Intimacy and sexual health in older adulthood'
+    ],
+    note: 'No outline was given. The syllabus also lists Mental Health in Older Adulthood for this date, but that lecture is taught on quiz day and no materials were provided, so it is not included. Creativity Day 2 (taught 9/30, after the “Stopped here” note) is included here as Lecture 9; Creativity Day 1 remains under Quiz 3.'
+  },
   { id: 5, label: 'Quiz 5', date: 'Mon, Oct 26', ready: false, topics: 'Longevity, Health & Functioning' },
   { id: 6, label: 'Quiz 6', date: 'Fri, Oct 30', ready: false, topics: 'Leisure & Retirement · Death & Dying' },
   { id: 'final', label: 'Final Exam', date: 'Thu, Dec 10 · 11 AM', ready: false, topics: 'Cumulative and comprehensive · 100 points' }
